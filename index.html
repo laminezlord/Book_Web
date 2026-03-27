@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Modern Book Manager - Track your reading list professionally">
+  <title>Book Nest By Laminez</title>
+  <script src = "script.js"></script>
+  <link rel = "stylesheet" href = "style.css">
+  <link rel="icon" type="image/x-icon" href="images/favicon.png">
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header__icon">
+        <i data-lucide="book-open" style="width: 36px; height: 36px;"></i>
+      </div>
+      <h1 class="header__title">Book Nest</h1>
+      <p class="header__subtitle">Organize your reading journey</p>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-card__value" id="totalCount">0</div>
+        <div class="stat-card__label">Total Books</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value" id="readCount">0</div>
+        <div class="stat-card__label">Completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value" id="progressPercent">0%</div>
+        <div class="stat-card__label">Progress</div>
+      </div>
+    </div>
+
+    <!-- Main Card -->
+    <main class="card">
+      <!-- Input Section -->
+      <div class="input-section">
+        <div class="input-wrapper">
+          <i data-lucide="book" class="input-wrapper__icon" style="width: 22px; height: 22px;"></i>
+          <input 
+            type="text" 
+            id="bookInput" 
+            class="input" 
+            placeholder="Enter book title..."
+            autocomplete="off"
+            aria-label="Book title"
+          >
+        </div>
+        <button id="addBookBtn" class="btn btn--primary">
+          <i data-lucide="plus" style="width: 20px; height: 20px;"></i>
+          <span>Add Book</span>
+        </button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters" role="tablist" aria-label="Filter books">
+        <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All Books</button>
+        <button class="filter-btn" data-filter="unread" role="tab" aria-selected="false">To Read</button>
+        <button class="filter-btn" data-filter="read" role="tab" aria-selected="false">Completed</button>
+      </div>
+
+      <!-- Book List -->
+      <ul id="bookList" class="book-list" role="list" aria-label="Book list"></ul>
+      
+      <!-- Empty State -->
+      <div id="emptyState" class="empty-state" style="display: none;">
+        <div class="empty-state__icon">
+          <i data-lucide="library" style="width: 48px; height: 48px;"></i>
+        </div>
+        <h3 class="empty-state__title">Your library is empty</h3>
+        <p>Start building your collection by adding your first book above</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>
