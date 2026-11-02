@@ -3,92 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Modern Book Manager - Track your reading list professionally">
-  <title>Book Nest By Laminez</title>
-  <script src = "script.js"></script>
-  <link rel = "stylesheet" href = "style.css">
-  <link rel="icon" type="image/x-icon" href="images/favicon.png">
-  
-  <!-- Modern Google Fonts -->
+  <meta name="description" content="Book Nest: find books, shelve them, track your pages and rate what you finish.">
+  <title>Book Nest</title>
+  <link rel="icon" type="image/png" href="images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-
-  <div class="container">
-    <!-- Header -->
-    <header class="header">
-      <div class="header__icon">
-        <i data-lucide="book-open" style="width: 36px; height: 36px;"></i>
+  <div class="page">
+    <header class="masthead">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <rect x="6" y="8" width="7" height="26" rx="1.5"/>
+          <rect x="15" y="5" width="7" height="29" rx="1.5"/>
+          <rect x="24.5" y="9" width="7" height="25" rx="1.5" transform="rotate(-12 28 21.5)"/>
+        </svg>
+        <h1>Book Nest</h1>
       </div>
-      <h1 class="header__title">Book Nest</h1>
-      <p class="header__subtitle">Organize your reading journey</p>
+      <p class="summary" id="summary">Your shelf is empty. Find a book below to start.</p>
     </header>
 
-    <!-- Stats -->
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-card__value" id="totalCount">0</div>
-        <div class="stat-card__label">Total Books</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card__value" id="readCount">0</div>
-        <div class="stat-card__label">Completed</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card__value" id="progressPercent">0%</div>
-        <div class="stat-card__label">Progress</div>
-      </div>
-    </div>
-
-    <!-- Main Card -->
-    <main class="card">
-      <!-- Input Section -->
-      <div class="input-section">
-        <div class="input-wrapper">
-          <i data-lucide="book" class="input-wrapper__icon" style="width: 22px; height: 22px;"></i>
-          <input 
-            type="text" 
-            id="bookInput" 
-            class="input" 
-            placeholder="Enter book title..."
-            autocomplete="off"
-            aria-label="Book title"
-          >
+    <section class="finder" aria-labelledby="finderLabel">
+      <form id="addForm" class="add" autocomplete="off">
+        <label id="finderLabel" class="add-label" for="titleInput">Add a book</label>
+        <div class="add-row">
+          <div class="combo">
+            <input id="titleInput" class="field" type="text" placeholder="Search by title or author"
+                   role="combobox" aria-expanded="false" aria-controls="suggest" aria-autocomplete="list" required>
+            <span class="spinner" id="spinner" hidden></span>
+            <ul class="suggest" id="suggest" role="listbox" hidden></ul>
+          </div>
+          <button class="btn primary" type="submit">Add to shelf</button>
         </div>
-        <button id="addBookBtn" class="btn btn--primary">
-          <i data-lucide="plus" style="width: 20px; height: 20px;"></i>
-          <span>Add Book</span>
-        </button>
-      </div>
+        <p class="hint" id="hint">Pick a match to fill in the author, cover and page count. Or press Add to shelf to add the title as typed.</p>
+      </form>
+    </section>
 
-      <!-- Filters -->
-      <div class="filters" role="tablist" aria-label="Filter books">
-        <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All Books</button>
-        <button class="filter-btn" data-filter="unread" role="tab" aria-selected="false">To Read</button>
-        <button class="filter-btn" data-filter="read" role="tab" aria-selected="false">Completed</button>
-      </div>
-
-      <!-- Book List -->
-      <ul id="bookList" class="book-list" role="list" aria-label="Book list"></ul>
-      
-      <!-- Empty State -->
-      <div id="emptyState" class="empty-state" style="display: none;">
-        <div class="empty-state__icon">
-          <i data-lucide="library" style="width: 48px; height: 48px;"></i>
+    <section class="shelf" aria-labelledby="shelfLabel">
+      <div class="shelf-head">
+        <h2 id="shelfLabel" class="sr-only">Your shelf</h2>
+        <div class="tabs" role="tablist" aria-label="Filter by status">
+          <button role="tab" data-filter="all" aria-selected="true">All <span data-n="all"></span></button>
+          <button role="tab" data-filter="want" aria-selected="false">To read <span data-n="want"></span></button>
+          <button role="tab" data-filter="reading" aria-selected="false">Reading <span data-n="reading"></span></button>
+          <button role="tab" data-filter="done" aria-selected="false">Finished <span data-n="done"></span></button>
         </div>
-        <h3 class="empty-state__title">Your library is empty</h3>
-        <p>Start building your collection by adding your first book above</p>
+        <div class="tools">
+          <label class="sr-only" for="findInput">Search your shelf</label>
+          <input id="findInput" class="field small" type="search" placeholder="Search shelf">
+          <label class="sr-only" for="sortSelect">Sort</label>
+          <select id="sortSelect" class="field small">
+            <option value="recent">Recently added</option>
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="progress">Progress</option>
+          </select>
+        </div>
       </div>
-    </main>
+
+      <ul class="books" id="books" aria-live="polite"></ul>
+      <div class="empty" id="empty" hidden></div>
+    </section>
+
+    <footer class="foot">
+      Built by Laminez. Book data and covers come from <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>. Your shelf is saved in this browser only.
+    </footer>
   </div>
 
-  <!-- Toast Container -->
-  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span id="toastText"></span>
+    <button id="toastAction" class="toast-action" hidden>Undo</button>
+  </div>
 </body>
 </html>
